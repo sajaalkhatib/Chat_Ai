@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,122 +8,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Chat_Ai.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-        }
-        .wrapper {
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .sidebar {
-            width: 260px;
-            background-color: #f8f9fa;
-            border-right: 1px solid #e5e5e5;
-            display: flex;
-            flex-direction: column;
-            transition: all 0.3s;
-        }
-        .sidebar-header {
-            padding: 15px;
-        }
-        .new-chat-btn {
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            padding: 10px 15px;
-            text-align: left;
-            background: #ffffff;
-            color: #212529;
-            width: 100%;
-            cursor: pointer;
-            transition: background 0.2s, box-shadow 0.2s;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .new-chat-btn:hover {
-            background: #f8f9fa;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .main-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            background-color: #ffffff;
-        }
-        .navbar-custom {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e5e5e5;
-            padding: 15px 20px;
-            z-index: 10;
-        }
-        .content-body {
-            flex-grow: 1;
-            overflow-y: auto;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        .footer-custom {
-            background-color: #ffffff;
-            padding: 15px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #6c757d;
-        }
-        .history-item {
-            padding: 8px 15px;
-            margin-bottom: 5px;
-            border-radius: 6px;
-            cursor: pointer;
-            color: #495057;
-            font-size: 0.9rem;
-            text-decoration: none;
-            display: block;
-        }
-        .history-item:hover {
-            background-color: #e9ecef;
-            color: #212529;
-        }
-        /* Loader Styles */
-        #page-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            transition: opacity 0.5s ease;
-        }
-        .loader-icon {
-            font-size: 3.5rem;
-            color: #d97757;
-            animation: pulse 2.8s infinite ease-in-out;
-        }
-        @@keyframes pulse {
-            0% { transform: scale(0.9); opacity: 0.7; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(0.9); opacity: 0.7; }
-        }
-        .loader-text {
-            margin-top: 15px;
-            font-weight: 600;
-            color: #6c757d;
-            letter-spacing: 1.5px;
-            font-size: 1.1rem;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/Layout.css" asp-append-version="true" />
+
 </head>
 <body>
     <!-- Global Loader -->
@@ -182,21 +67,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        // Hide the loader once the page is fully loaded
-        window.addEventListener('load', function () {
-            const loader = document.getElementById('page-loader');
-            if (loader) {
-                // Add a small delay for a smoother visual experience
-                setTimeout(function () {
-                    loader.style.opacity = '0';
-                    setTimeout(function () {
-                        loader.style.display = 'none';
-                    }, 500); // Matches the CSS transition duration
-                }, 400); 
-            }
-        });
-    </script>
+	<script src="~/js/Layout.js" asp-append-version="true"></script>    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
