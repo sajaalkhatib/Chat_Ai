@@ -14,6 +14,7 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "YOUR_CLIENT_SECRET";
 });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
