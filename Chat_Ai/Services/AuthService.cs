@@ -41,5 +41,24 @@ namespace Chat_Ai.Services
 
             return AuthResultDto.Ok(user.Id, "تم إنشاء الحساب بنجاح");
         }
+
+        public async Task<AuthResultDto> LoginAsync(LoginDto dto)
+        {
+            // Find user by email
+            var user = await _userRepository.GetByEmailAsync(dto.Email);
+            if (user == null)
+            {
+                return AuthResultDto.Fail("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+            }
+
+            // Verify password
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(dto.Password, user.Password);
+            if (!isPasswordValid)
+            {
+                return AuthResultDto.Fail("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+            }
+
+            return AuthResultDto.Ok(user.Id, user.Name);
+        }
     }
 }

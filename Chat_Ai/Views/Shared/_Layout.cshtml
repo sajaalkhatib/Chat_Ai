@@ -37,10 +37,27 @@
                 <a href="#" class="history-item text-truncate">How to code in C#</a>
             </div>
             <div class="sidebar-footer p-3 border-top">
-                <a href="/Account/Login" class="d-flex align-items-center text-decoration-none" style="cursor: pointer;">
-                    <i class="bi bi-person-circle fs-4 me-2 text-secondary"></i>
-                    <span class="text-dark fw-medium">User Profile</span>
-                </a>
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-person-circle fs-4 me-2 text-secondary"></i>
+                            <span class="text-dark fw-medium">@User.Identity.Name</span>
+                        </div>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary border-0" title="تسجيل الخروج">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <a href="/Account/Login" class="d-flex align-items-center text-decoration-none" style="cursor: pointer;">
+                        <i class="bi bi-person-circle fs-4 me-2 text-secondary"></i>
+                        <span class="text-dark fw-medium">تسجيل الدخول</span>
+                    </a>
+                }
             </div>
         </div>
 

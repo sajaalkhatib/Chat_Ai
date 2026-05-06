@@ -23,6 +23,38 @@ namespace Chat_Ai.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
+            var result = await _authService.LoginAsync(dto);
+
+            if (!result.Success)
+            {
+                ModelState.AddModelError(string.Empty, result.Message!);
+                return View(dto);
+            }
+
+            // Login successful — sign the user in
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, result.UserId!),
+                new Claim(ClaimTypes.Name, result.Message!), // Message contains user name
+                new Claim(ClaimTypes.Email, dto.Email)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("Cookies", principal);
+
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
