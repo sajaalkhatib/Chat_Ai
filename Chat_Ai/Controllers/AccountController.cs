@@ -1,3 +1,5 @@
+using Chat_Ai.DTOs;
+using Chat_Ai.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -8,6 +10,13 @@ namespace Chat_Ai.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IAuthService _authService;
+
+        public AccountController(IAuthService authService)
+        {
+            _authService = authService;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -18,6 +27,38 @@ namespace Chat_Ai.Controllers
         public IActionResult Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(dto);
+            }
+
+            var result = await _authService.RegisterAsync(dto);
+
+            if (!result.Success)
+            {
+                ModelState.AddModelError(string.Empty, result.Message!);
+                return View(dto);
+            }
+
+            // Registration successful — sign the user in
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, result.UserId!),
+                new Claim(ClaimTypes.Name, dto.Name),
+                new Claim(ClaimTypes.Email, dto.Email)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("Cookies", principal);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]

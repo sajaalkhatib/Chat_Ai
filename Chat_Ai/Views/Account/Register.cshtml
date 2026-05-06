@@ -1,3 +1,4 @@
+@model Chat_Ai.DTOs.RegisterDto
 @{
     Layout = null;
 }
@@ -10,26 +11,39 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/Register.css" />
-
-  
 </head>
 <body>
     <div class="auth-container">
         <div class="brand"><i class="bi bi-robot"></i> SK.AI</div>
         <div class="subtitle">إنشاء حساب جديد</div>
 
-        <form method="post" action="/Account/Register">
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger text-end" role="alert">
+                <ul class="mb-0 list-unstyled">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <form method="post" asp-controller="Account" asp-action="Register">
             <div class="mb-3 text-end">
                 <label class="form-label">الاسم الكامل</label>
-                <input type="text" class="form-control text-end" name="name" placeholder="الاسم" required>
+                <input type="text" class="form-control text-end" asp-for="Name" placeholder="الاسم" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
             </div>
             <div class="mb-3 text-end">
                 <label class="form-label">البريد الإلكتروني</label>
-                <input type="email" class="form-control text-end" name="email" placeholder="name@example.com" required>
+                <input type="email" class="form-control text-end" asp-for="Email" placeholder="name@example.com" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
             </div>
             <div class="mb-3 text-end">
                 <label class="form-label">كلمة المرور</label>
-                <input type="password" class="form-control text-end" name="password" placeholder="••••••••" required>
+                <input type="password" class="form-control text-end" asp-for="Password" placeholder="••••••••" />
+                <span asp-validation-for="Password" class="text-danger small"></span>
             </div>
             <button type="submit" class="btn btn-primary">إنشاء الحساب</button>
         </form>
