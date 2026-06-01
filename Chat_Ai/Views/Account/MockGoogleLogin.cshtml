@@ -1,0 +1,165 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تسجيل الدخول باستخدام Google (بيئة تجريبية)</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        
+        body {
+            background-color: #f0f4f9;
+            font-family: 'Inter', 'Outfit', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .login-card {
+            background-color: #ffffff;
+            border-radius: 28px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            border: 1px solid #e0e0e0;
+        }
+
+        .google-logo {
+            margin-bottom: 24px;
+            display: inline-block;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #1f1f1f;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #444746;
+            margin-bottom: 32px;
+        }
+
+        .sandbox-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .form-floating > .form-control {
+            border-radius: 12px;
+            border: 1px solid #747775;
+            padding: 1rem 0.75rem;
+            text-align: right;
+        }
+
+        .form-floating > .form-control:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 1px #1a73e8;
+        }
+
+        .form-floating > label {
+            right: 0;
+            left: auto;
+            padding: 1rem 0.75rem;
+            transform-origin: 100% 0;
+            color: #444746;
+        }
+
+        .form-floating > .form-control:focus ~ label,
+        .form-floating > .form-control:not(:placeholder-shown) ~ label {
+            transform: scale(0.85) translateY(-0.5rem) translateX(-0.5rem);
+            color: #1a73e8;
+        }
+
+        .btn-submit {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 100px;
+            padding: 12px 24px;
+            font-weight: 500;
+            font-size: 14px;
+            width: 100%;
+            margin-top: 16px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #1557b0;
+            cursor: pointer;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: #747775;
+            margin-top: 24px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <!-- Google Logo SVG -->
+        <div class="google-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.5 24c0-1.61-.15-3.16-.42-4.69H24v8.89h12.67c-.55 2.87-2.17 5.3-4.61 6.94l7.16 5.55C43.34 36.6 46.5 30.93 46.5 24z"/>
+                <path fill="#FBBC05" d="M10.54 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.98-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.16-5.55c-1.98 1.33-4.51 2.11-7.16 2.11-6.26 0-11.57-4.22-13.46-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+        </div>
+
+        <div class="title">تسجيل الدخول</div>
+        <div class="subtitle">المتابعة إلى تطبيق SK.AI</div>
+
+        <div class="sandbox-badge">
+            <i class="bi bi-shield-fill-check"></i>
+            بيئة تطويرية - محاكاة تسجيل الدخول
+        </div>
+
+        <form method="post" action="/Account/MockGoogleLogin">
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="emailInput" name="email" value="sjalkhatib@gmail.com" placeholder="name@example.com" required>
+                <label for="emailInput">البريد الإلكتروني</label>
+            </div>
+
+            <div class="form-floating mb-4">
+                <input type="text" class="form-control" id="nameInput" name="name" value="Saja Alkhatib" placeholder="Name" required>
+                <label for="nameInput">الاسم الكامل</label>
+            </div>
+
+            <button type="submit" class="btn-submit">تسجيل الدخول التجريبي</button>
+        </form>
+
+        <div class="info-text">
+            هذه الصفحة تحاكي نظام تسجيل الدخول الخاص بـ Google لتسهيل التطوير والاختبار المحلي وتجنب إعدادات الحماية المعقدة.
+        </div>
+    </div>
+</body>
+</html>

@@ -17,10 +17,15 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = "Google";
 })
 .AddCookie("Cookies")
+.AddCookie("External")
 .AddGoogle(options =>
 {
+    options.SignInScheme = "External";
     options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "YOUR_CLIENT_ID";
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "YOUR_CLIENT_SECRET";
+    
+    // Allow HTTP testing on localhost without SameSite=None secure restrictions
+    options.CorrelationCookie.SameSite = SameSiteMode.Lax;
 });
 
 builder.Services.AddDbContext<MyDbContext>(options =>
@@ -52,3 +57,6 @@ app.MapControllerRoute(
 
 
 app.Run();
+
+
+

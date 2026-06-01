@@ -11,10 +11,12 @@ namespace Chat_Ai.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthService _authService;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(IAuthService authService)
+        public AccountController(IAuthService authService, IConfiguration configuration)
         {
             _authService = authService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -96,19 +98,86 @@ namespace Chat_Ai.Controllers
         [HttpGet]
         public IActionResult ExternalLogin(string provider = "Google")
         {
+            var clientId = _configuration["Authentication:Google:ClientId"];
+            if (string.IsNullOrEmpty(clientId) || clientId.Contains("YOUR_GOOGLE_CLIENT_ID") || clientId.Contains("اكتب_هنا"))
+            {
+                return RedirectToAction("MockGoogleLogin");
+            }
+
             var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
             return Challenge(properties, provider);
         }
 
+        [HttpGet]
+        public IActionResult MockGoogleLogin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MockGoogleLogin(string email, string name)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                email = "sjalkhatib@gmail.com";
+            }
+            if (string.IsNullOrEmpty(name))
+            {
+                name = "Saja Alkhatib";
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, "mock-google-id-12345"),
+                new Claim(ClaimTypes.Name, name),
+                new Claim(ClaimTypes.Email, email)
+            };
+
+            var identity = new ClaimsIdentity(claims, "External");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("External", principal);
+
+            return RedirectToAction("GoogleResponse");
+        }
+
         public async Task<IActionResult> GoogleResponse()
         {
-            var result = await HttpContext.AuthenticateAsync("Cookies");
-            if (result.Succeeded)
+            var result = await HttpContext.AuthenticateAsync("External");
+            if (!result.Succeeded || result.Principal == null)
             {
-                // In a real app, you'd save the user to your DB here
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login");
             }
-            return RedirectToAction("Login");
+
+            var email = result.Principal.FindFirstValue(ClaimTypes.Email);
+            if (string.IsNullOrEmpty(email))
+            {
+                await HttpContext.SignOutAsync("External");
+                return RedirectToAction("Login");
+            }
+
+            var name = result.Principal.FindFirstValue(ClaimTypes.Name) ?? email;
+
+            // Get or create the user in the database
+            var user = await _authService.GetOrCreateExternalUserAsync(email, name);
+
+            // Clean up the temporary external cookie
+            await HttpContext.SignOutAsync("External");
+
+            // Sign the user in with the database claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("Cookies", principal);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -119,3 +188,4 @@ namespace Chat_Ai.Controllers
         }
     }
 }
+ 

@@ -60,5 +60,28 @@ namespace Chat_Ai.Services
 
             return AuthResultDto.Ok(user.Id, user.Name);
         }
+
+        public async Task<User> GetOrCreateExternalUserAsync(string email, string name)
+        {
+            var user = await _userRepository.GetByEmailAsync(email);
+            if (user == null)
+            {
+                // Generate a secure random password hash for external users
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString("N"));
+
+                user = new User
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = name,
+                    Email = email,
+                    Password = hashedPassword,
+                    CreatedAt = DateTime.Now
+                };
+
+                await _userRepository.AddAsync(user);
+                await _userRepository.SaveChangesAsync();
+            }
+            return user;
+        }
     }
 }
