@@ -9,7 +9,11 @@ builder.Services.AddControllersWithViews();
 
 // Register Repository & Service layers
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddHttpClient<IGeminiService, GeminiService>();
 
 builder.Services.AddAuthentication(options =>
 {

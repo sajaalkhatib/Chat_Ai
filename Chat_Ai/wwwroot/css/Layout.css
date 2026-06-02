@@ -1,4 +1,4 @@
-﻿
+
 body, html {
     height: 100%;
     margin: 0;
@@ -85,13 +85,44 @@ body, html {
     color: #495057;
     font-size: 0.9rem;
     text-decoration: none;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
 }
 
     .history-item:hover {
         background-color: #e9ecef;
         color: #212529;
     }
+
+    .history-item.active {
+        background-color: #e9ecef;
+        color: #212529;
+        font-weight: 500;
+    }
+
+.delete-chat-btn {
+    background: none;
+    border: none;
+    color: #adb5bd;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.history-item:hover .delete-chat-btn {
+    opacity: 1;
+}
+
+.delete-chat-btn:hover {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.1);
+}
 /* Loader Styles */
 #page-loader {
     position: fixed;

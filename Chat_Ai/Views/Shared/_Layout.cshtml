@@ -24,7 +24,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <button class="new-chat-btn" onclick="window.location.href='/'">
+                <button class="new-chat-btn" onclick="startNewChat()">
                     <i class="bi bi-chat-square-text"></i> New chat
                 </button>
             </div>
@@ -32,9 +32,10 @@
                 <div class="px-3 mb-2">
                     <small class="text-muted" style="font-size: 0.75rem; font-weight: 600;">Recent</small>
                 </div>
-                <!-- History items -->
-                <a href="#" class="history-item text-truncate">What is AI?</a>
-                <a href="#" class="history-item text-truncate">How to code in C#</a>
+                <!-- Dynamic history items loaded by JS -->
+                <div id="chatHistoryList">
+                    <div class="text-muted px-3 py-2" style="font-size: 0.8rem;">Loading...</div>
+                </div>
             </div>
             <div class="sidebar-footer p-3 border-top">
                 @if (User.Identity != null && User.Identity.IsAuthenticated)
