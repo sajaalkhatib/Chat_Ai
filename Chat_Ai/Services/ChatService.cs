@@ -7,13 +7,13 @@ namespace Chat_Ai.Services
     {
         private readonly IChatRepository _chatRepository;
         private readonly IMessageRepository _messageRepository;
-        private readonly IGeminiService _geminiService;
+        private readonly IGroqService _groqService;
 
-        public ChatService(IChatRepository chatRepository, IMessageRepository messageRepository, IGeminiService geminiService)
+        public ChatService(IChatRepository chatRepository, IMessageRepository messageRepository, IGroqService groqService)
         {
             _chatRepository = chatRepository;
             _messageRepository = messageRepository;
-            _geminiService = geminiService;
+            _groqService = groqService;
         }
 
         public async Task<(string Reply, int ChatId)> ProcessMessageAsync(string userId, string message, int? chatId)
@@ -58,8 +58,8 @@ namespace Chat_Ai.Services
             // Get history for this chat
             var history = chat.Messages?.OrderBy(m => m.CreatedAt).ToList() ?? new List<Message>();
 
-            // Send to Gemini with history
-            var reply = await _geminiService.SendMessageAsync(message, history);
+            // Send to Groq with history
+            var reply = await _groqService.SendMessageAsync(message, history);
 
             // Save user message
             var userMsg = new Message
